@@ -1,18 +1,18 @@
 {
   "name": "marketplace-api",
   "description": "See README.md file",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
     "dev": "nodemon"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^3.0.1"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "pg": "^8.11.1",
+    "pg": "^8.11.2",
     "sequelize": "^6.32.1"
   },
   "main": "index.js",

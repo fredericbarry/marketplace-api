@@ -17,6 +17,10 @@ A marketplace featuring merchants and products, accessible through a RESTful API
 
 ## Changelog
 
+### v0.2.0
+
+- Added basic CRUD operations on products
+
 ### v0.1.0
 
 - Initial release providing basic CRUD operations on merchants
