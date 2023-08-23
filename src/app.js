@@ -1,8 +1,8 @@
 import cors from "cors";
 import express from "express";
 
-import { merchantsRouter } from "./routers/merchants.router.js";
-import { productsRouter } from "./routers/products.router.js";
+import { router as merchantsRouterV1 } from "./routers/v1.merchants.router.js";
+import { productsRouter } from "./routers/v1.products.router.js";
 import { APP_WHITELIST } from "./configs/app.config.js";
 import {
     errorLogger,
@@ -25,8 +25,8 @@ const app = express();
 app.use(express.json());
 app.use(cors(corsOptions));
 
-app.use("/merchants", merchantsRouter);
-app.use("/products", productsRouter);
+app.use("/v1/merchants", merchantsRouterV1);
+app.use("/v1/products", productsRouter);
 
 app.use(errorLogger);
 app.use(errorResponder);

@@ -6,7 +6,7 @@ import {
     getProduct,
     getProducts,
     removeProduct,
-} from "../controllers/products.controller.js";
+} from "../controllers/v1.products.controller.js";
 import { auth } from "../utils/middlewares.js";
 
 const productsRouter = Router();

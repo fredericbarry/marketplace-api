@@ -5,7 +5,7 @@ import {
     readProduct,
     readProducts,
     updateProduct,
-} from "../models/product.model.js";
+} from "../models/v1.product.model.js";
 import { ERRORS, throwError } from "../utils/error.js";
 
 /**

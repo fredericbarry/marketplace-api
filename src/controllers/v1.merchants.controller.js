@@ -5,7 +5,7 @@ import {
     readMerchant,
     readMerchants,
     updateMerchant,
-} from "../models/merchant.model.js";
+} from "../models/v1.merchant.model.js";
 import { ERRORS, throwError } from "../utils/error.js";
 
 /**
