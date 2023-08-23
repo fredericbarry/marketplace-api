@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 
 import { router as merchantsRouterV1 } from "./routers/v1.merchants.router.js";
-import { productsRouter } from "./routers/v1.products.router.js";
+import { router as productsRouterV1 } from "./routers/v1.products.router.js";
 import { APP_WHITELIST } from "./configs/app.config.js";
 import {
     errorLogger,
@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 
 app.use("/v1/merchants", merchantsRouterV1);
-app.use("/v1/products", productsRouter);
+app.use("/v1/products", productsRouterV1);
 
 app.use(errorLogger);
 app.use(errorResponder);

@@ -20,6 +20,7 @@ A marketplace featuring merchants and products, accessible through a RESTful API
 ### v0.2.1
 
 - Added route-based versioning
+- Renamed internal resources
 
 ### v0.2.0
 

@@ -1,25 +1,19 @@
 import { MERCHANT_STATUSES } from "../configs/constants.config.js";
-import {
-    createMerchant,
-    deleteMerchant,
-    readMerchant,
-    readMerchants,
-    updateMerchant,
-} from "../models/v1.merchant.model.js";
+import * as MerchantModelV1 from "../models/v1.merchant.model.js";
 import { ERRORS, throwError } from "../utils/error.js";
 
 /**
- * Add a merchant
+ * Create a merchant
  *
  * @param {Object} req The request
  * @param {Object} res The response
  * @param {Object} req.body The JSON payload
  * @param {Function} next
  */
-async function addMerchant(req, res, next) {
+async function createNew(req, res, next) {
     try {
         validateMerchant(req.body);
-        const merchant = await createMerchant(req.body);
+        const merchant = await MerchantModelV1.createNew(req.body);
         res.json(merchant);
     } catch (error) {
         next(error);
@@ -27,22 +21,16 @@ async function addMerchant(req, res, next) {
 }
 
 /**
- * Edit a merchant
+ * Get all merchants
  *
- * @param {Object} req The request
+ * @param {Object} _req The request (unused)
  * @param {Object} res The response
- * @param {Object} req.body The JSON payload
- * @param {Number} req.params.id The merchant ID
  * @param {Function} next
  */
-async function editMerchant(req, res, next) {
-    const body = req.body;
-    const id = req.params.id;
-
+async function getAll(_req, res, next) {
     try {
-        validateMerchant(req.body);
-        const merchant = await updateMerchant(id, body);
-        res.json(merchant);
+        const merchants = await MerchantModelV1.getAll();
+        res.json(merchants);
     } catch (error) {
         next(error);
     }
@@ -56,11 +44,11 @@ async function editMerchant(req, res, next) {
  * @param {Number} req.params.id The merchant ID
  * @param {Function} next
  */
-async function getMerchant(req, res, next) {
+async function getOne(req, res, next) {
     const id = req.params.id;
 
     try {
-        const merchant = await readMerchant(id);
+        const merchant = await MerchantModelV1.getOne(id);
         res.json(merchant);
     } catch (error) {
         next(error);
@@ -68,34 +56,40 @@ async function getMerchant(req, res, next) {
 }
 
 /**
- * Get merchants
+ * Update a merchant
  *
- * @param {Object} _req The request (unused)
+ * @param {Object} req The request
  * @param {Object} res The response
+ * @param {Object} req.body The JSON payload
+ * @param {Number} req.params.id The merchant ID
  * @param {Function} next
  */
-async function getMerchants(_req, res, next) {
+async function updateOne(req, res, next) {
+    const body = req.body;
+    const id = req.params.id;
+
     try {
-        const merchants = await readMerchants();
-        res.json(merchants);
+        validateMerchant(req.body);
+        const merchant = await MerchantModelV1.updateOne(id, body);
+        res.json(merchant);
     } catch (error) {
         next(error);
     }
 }
 
 /**
- * Remove a merchant
+ * Delete a merchant
  *
  * @param {Object} req The request
  * @param {Object} res The response
  * @param {Number} req.params.id The merchant ID
  * @param {Function} next
  */
-const removeMerchant = async (req, res, next) => {
+const deleteOne = async (req, res, next) => {
     const id = req.params.id;
 
     try {
-        await deleteMerchant(id);
+        await MerchantModelV1.deleteOne(id);
         res.status(200).end();
     } catch (error) {
         next(error);
@@ -128,4 +122,4 @@ function validateMerchant(body) {
     }
 }
 
-export { addMerchant, editMerchant, getMerchants, getMerchant, removeMerchant };
+export { createNew, getAll, getOne, updateOne, deleteOne };

@@ -1,25 +1,19 @@
 import { PRODUCT_STATUSES } from "../configs/constants.config.js";
-import {
-    createProduct,
-    deleteProduct,
-    readProduct,
-    readProducts,
-    updateProduct,
-} from "../models/v1.product.model.js";
+import * as ProductModelV1 from "../models/v1.product.model.js";
 import { ERRORS, throwError } from "../utils/error.js";
 
 /**
- * Add a product
+ * Create a product
  *
  * @param {Object} req The request
  * @param {Object} res The response
  * @param {Object} req.body The JSON payload
  * @param {Function} next
  */
-async function addProduct(req, res, next) {
+async function createNew(req, res, next) {
     try {
         validateProduct(req.body);
-        const product = await createProduct(req.body);
+        const product = await ProductModelV1.createNew(req.body);
         res.json(product);
     } catch (error) {
         next(error);
@@ -27,22 +21,16 @@ async function addProduct(req, res, next) {
 }
 
 /**
- * Edit a product
+ * Get all products
  *
- * @param {Object} req The request
+ * @param {Object} _req The request (unused)
  * @param {Object} res The response
- * @param {Object} req.body The JSON payload
- * @param {Number} req.params.id The product ID
  * @param {Function} next
  */
-async function editProduct(req, res, next) {
-    const body = req.body;
-    const id = req.params.id;
-
+async function getAll(_req, res, next) {
     try {
-        validateProduct(req.body);
-        const product = await updateProduct(id, body);
-        res.json(product);
+        const products = await ProductModelV1.getAll();
+        res.json(products);
     } catch (error) {
         next(error);
     }
@@ -56,11 +44,11 @@ async function editProduct(req, res, next) {
  * @param {Number} req.params.id The product ID
  * @param {Function} next
  */
-async function getProduct(req, res, next) {
+async function getOne(req, res, next) {
     const id = req.params.id;
 
     try {
-        const product = await readProduct(id);
+        const product = await ProductModelV1.getOne(id);
         res.json(product);
     } catch (error) {
         next(error);
@@ -68,34 +56,40 @@ async function getProduct(req, res, next) {
 }
 
 /**
- * Get products
+ * Update a product
  *
- * @param {Object} _req The request (unused)
+ * @param {Object} req The request
  * @param {Object} res The response
+ * @param {Object} req.body The JSON payload
+ * @param {Number} req.params.id The product ID
  * @param {Function} next
  */
-async function getProducts(_req, res, next) {
+async function updateOne(req, res, next) {
+    const body = req.body;
+    const id = req.params.id;
+
     try {
-        const products = await readProducts();
-        res.json(products);
+        validateProduct(req.body);
+        const product = await ProductModelV1.updateOne(id, body);
+        res.json(product);
     } catch (error) {
         next(error);
     }
 }
 
 /**
- * Remove a product
+ * Delete a product
  *
  * @param {Object} req The request
  * @param {Object} res The response
  * @param {Number} req.params.id The product ID
  * @param {Function} next
  */
-const removeProduct = async (req, res, next) => {
+const deleteOne = async (req, res, next) => {
     const id = req.params.id;
 
     try {
-        await deleteProduct(id);
+        await ProductModelV1.deleteOne(id);
         res.status(200).end();
     } catch (error) {
         next(error);
@@ -128,4 +122,4 @@ function validateProduct(body) {
     }
 }
 
-export { addProduct, editProduct, getProducts, getProduct, removeProduct };
+export { createNew, getAll, getOne, updateOne, deleteOne };

@@ -40,7 +40,7 @@ await Merchant.sync({
  * @param {Object} merchant The merchant to create
  * @returns {Promise|Merchant} The created merchant object
  */
-async function createMerchant(merchant) {
+async function createNew(merchant) {
     try {
         merchant.created_utc = nowUtc();
         merchant.updated_utc = nowUtc();
@@ -64,50 +64,11 @@ async function createMerchant(merchant) {
 }
 
 /**
- * Delete a merchant
- *
- * @param {Number} id The merchant ID
- * @returns {Promise|Number} The number of destroyed rows
- */
-async function deleteMerchant(id) {
-    const response = await Merchant.destroy({
-        where: {
-            id: id,
-        },
-    });
-
-    if (response === 0) {
-        throwError(
-            `Merchant ID ${id} could not be found for deletion`,
-            ERRORS.GONE
-        );
-    }
-
-    return response;
-}
-
-/**
- * Search for a single merchant by its primary key
- *
- * @param {Number} id The merchant ID
- * @returns {Promise|Merchant} The merchant object
- */
-async function readMerchant(id) {
-    const response = await Merchant.findByPk(id);
-
-    if (!response) {
-        throwError(`Merchant ID ${id} could not be found`, ERRORS.NOT_FOUND);
-    }
-
-    return response;
-}
-
-/**
  * Search for multiple merchants instances
  *
  * @returns {Promise|Array<Merchant>} The merchants array that was found
  */
-async function readMerchants() {
+async function getAll() {
     try {
         return await Merchant.findAll();
     } catch (error) {
@@ -120,13 +81,29 @@ async function readMerchants() {
 }
 
 /**
- * Update multiple merchant instances that match the where options
+ * Get a merchant by its primary key
+ *
+ * @param {Number} id The merchant ID
+ * @returns {Promise|Merchant} The merchant object
+ */
+async function getOne(id) {
+    const response = await Merchant.findByPk(id);
+
+    if (!response) {
+        throwError(`Merchant ID ${id} could not be found`, ERRORS.NOT_FOUND);
+    }
+
+    return response;
+}
+
+/**
+ * Update a merchant
  *
  * @param {Number} id The merchant ID
  * @param {Object} merchant The merchant details
  * @returns {Promise|Number} The number of affected rows
  */
-async function updateMerchant(id, merchant) {
+async function updateOne(id, merchant) {
     const { name, status } = merchant;
 
     const result = await Merchant.update(
@@ -143,16 +120,36 @@ async function updateMerchant(id, merchant) {
     );
 
     if (result[0] === 0) {
-        throwError(`Merchant ID ${id} could not be found for update`, ERRORS.GONE);
+        throwError(
+            `Merchant ID ${id} could not be found for update`,
+            ERRORS.GONE
+        );
     }
 
     return result[0];
 }
 
-export {
-    createMerchant,
-    deleteMerchant,
-    readMerchant,
-    readMerchants,
-    updateMerchant,
-};
+/**
+ * Delete a merchant
+ *
+ * @param {Number} id The merchant ID
+ * @returns {Promise|Number} The number of destroyed rows
+ */
+async function deleteOne(id) {
+    const response = await Merchant.destroy({
+        where: {
+            id: id,
+        },
+    });
+
+    if (response === 0) {
+        throwError(
+            `Merchant ID ${id} could not be found for deletion`,
+            ERRORS.GONE
+        );
+    }
+
+    return response;
+}
+
+export { createNew, getAll, getOne, updateOne, deleteOne };

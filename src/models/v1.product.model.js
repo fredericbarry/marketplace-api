@@ -40,7 +40,7 @@ await Product.sync({
  * @param {Object} product The product to create
  * @returns {Promise|Product} The created product object
  */
-async function createProduct(product) {
+async function createNew(product) {
     try {
         product.created_utc = nowUtc();
         product.updated_utc = nowUtc();
@@ -64,50 +64,11 @@ async function createProduct(product) {
 }
 
 /**
- * Delete a product
- *
- * @param {Number} id The product ID
- * @returns {Promise|Number} The number of destroyed rows
- */
-async function deleteProduct(id) {
-    const response = await Product.destroy({
-        where: {
-            id: id,
-        },
-    });
-
-    if (response === 0) {
-        throwError(
-            `Product ID ${id} could not be found for deletion`,
-            ERRORS.GONE
-        );
-    }
-
-    return response;
-}
-
-/**
- * Search for a single product by its primary key
- *
- * @param {Number} id The product ID
- * @returns {Promise|Product} The product object
- */
-async function readProduct(id) {
-    const response = await Product.findByPk(id);
-
-    if (!response) {
-        throwError(`Product ID ${id} could not be found`, ERRORS.NOT_FOUND);
-    }
-
-    return response;
-}
-
-/**
  * Search for multiple products instances
  *
  * @returns {Promise|Array<Product>} The products array that was found
  */
-async function readProducts() {
+async function getAll() {
     try {
         return await Product.findAll();
     } catch (error) {
@@ -120,13 +81,29 @@ async function readProducts() {
 }
 
 /**
- * Update multiple product instances that match the where options
+ * Get a product by its primary key
+ *
+ * @param {Number} id The product ID
+ * @returns {Promise|Product} The product object
+ */
+async function getOne(id) {
+    const response = await Product.findByPk(id);
+
+    if (!response) {
+        throwError(`Product ID ${id} could not be found`, ERRORS.NOT_FOUND);
+    }
+
+    return response;
+}
+
+/**
+ * Update a product
  *
  * @param {Number} id The product ID
  * @param {Object} product The product details
  * @returns {Promise|Number} The number of affected rows
  */
-async function updateProduct(id, product) {
+async function updateOne(id, product) {
     const { name, status } = product;
 
     const result = await Product.update(
@@ -143,16 +120,36 @@ async function updateProduct(id, product) {
     );
 
     if (result[0] === 0) {
-        throwError(`Product ID ${id} could not be found for update`, ERRORS.GONE);
+        throwError(
+            `Product ID ${id} could not be found for update`,
+            ERRORS.GONE
+        );
     }
 
     return result[0];
 }
 
-export {
-    createProduct,
-    deleteProduct,
-    readProduct,
-    readProducts,
-    updateProduct,
-};
+/**
+ * Delete a product
+ *
+ * @param {Number} id The product ID
+ * @returns {Promise|Number} The number of destroyed rows
+ */
+async function deleteOne(id) {
+    const response = await Product.destroy({
+        where: {
+            id: id,
+        },
+    });
+
+    if (response === 0) {
+        throwError(
+            `Product ID ${id} could not be found for deletion`,
+            ERRORS.GONE
+        );
+    }
+
+    return response;
+}
+
+export { createNew, getAll, getOne, updateOne, deleteOne };
