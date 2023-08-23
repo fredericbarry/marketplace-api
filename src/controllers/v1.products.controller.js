@@ -11,10 +11,12 @@ import { ERRORS, throwError } from "../utils/error.js";
  * @param {Function} next
  */
 async function createNew(req, res, next) {
+    const body = req.body;
+
     try {
-        validateProduct(req.body);
-        const product = await ProductModelV1.createNew(req.body);
-        res.json(product);
+        validateProduct(body);
+        const createdProduct = await ProductModelV1.createNew(body);
+        res.json(createdProduct);
     } catch (error) {
         next(error);
     }
@@ -29,8 +31,8 @@ async function createNew(req, res, next) {
  */
 async function getAll(_req, res, next) {
     try {
-        const products = await ProductModelV1.getAll();
-        res.json(products);
+        const allProducts = await ProductModelV1.getAll();
+        res.json(allProducts);
     } catch (error) {
         next(error);
     }
@@ -69,9 +71,9 @@ async function updateOne(req, res, next) {
     const id = req.params.id;
 
     try {
-        validateProduct(req.body);
-        const product = await ProductModelV1.updateOne(id, body);
-        res.json(product);
+        validateProduct(body);
+        const updatedProduct = await ProductModelV1.updateOne(id, body);
+        res.json(updatedProduct);
     } catch (error) {
         next(error);
     }

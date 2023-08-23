@@ -11,10 +11,12 @@ import { ERRORS, throwError } from "../utils/error.js";
  * @param {Function} next
  */
 async function createNew(req, res, next) {
+    const body = req.body;
+
     try {
-        validateMerchant(req.body);
-        const merchant = await MerchantModelV1.createNew(req.body);
-        res.json(merchant);
+        validateMerchant(body);
+        const createdMerchant = await MerchantModelV1.createNew(body);
+        res.json(createdMerchant);
     } catch (error) {
         next(error);
     }
@@ -29,8 +31,8 @@ async function createNew(req, res, next) {
  */
 async function getAll(_req, res, next) {
     try {
-        const merchants = await MerchantModelV1.getAll();
-        res.json(merchants);
+        const allMerchants = await MerchantModelV1.getAll();
+        res.json(allMerchants);
     } catch (error) {
         next(error);
     }
@@ -69,9 +71,9 @@ async function updateOne(req, res, next) {
     const id = req.params.id;
 
     try {
-        validateMerchant(req.body);
-        const merchant = await MerchantModelV1.updateOne(id, body);
-        res.json(merchant);
+        validateMerchant(body);
+        const updatedMerchant = await MerchantModelV1.updateOne(id, body);
+        res.json(updatedMerchant);
     } catch (error) {
         next(error);
     }
