@@ -1,5 +1,5 @@
 import { MERCHANT_STATUSES } from "../configs/constants.config.js";
-import * as MerchantModelV1 from "../models/v1.merchant.model.js";
+import * as MerchantModelV1 from "../services/v1.merchant.service.js";
 import { ERRORS, throwError } from "../utils/error.js";
 
 /**

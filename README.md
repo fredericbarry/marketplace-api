@@ -21,7 +21,7 @@ A marketplace featuring merchants and products, accessible through a RESTful API
 
 - Added route-based versioning
 - Renamed internal resources
-- Minor controllers code refactoring
+- Code refactoring
 
 ### v0.2.0
 
