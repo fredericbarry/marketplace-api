@@ -1,38 +1,6 @@
-import { DataTypes } from "sequelize";
-
-import { MERCHANT_STATUSES } from "../configs/constants.config.js";
+import Merchant from "../models/v1.merchant.model.js";
 import { nowUtc } from "../utils/date.js";
-import { db } from "../utils/db.js";
 import { ERRORS, throwError } from "../utils/error.js";
-
-const Merchant = db.define("merchants", {
-    id: {
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-    },
-    name: {
-        allowNull: false,
-        type: DataTypes.STRING,
-        unique: true,
-    },
-    status: {
-        type: DataTypes.ENUM,
-        values: MERCHANT_STATUSES,
-    },
-    created_utc: {
-        allowNull: false,
-        type: DataTypes.DATE,
-    },
-    updated_utc: {
-        allowNull: false,
-        type: DataTypes.DATE,
-    },
-});
-
-await Merchant.sync({
-    alter: true,
-});
 
 /**
  * Builds a new Merchant model instance and calls save on it
