@@ -1,18 +1,4 @@
-import { logError, logWarning } from "./logger.js";
-
-/**
- * Validate the API key
- *
- * @param {Object} req The request
- * @param {Object} _res The response (unused)
- * @param {Function} next
- */
-function auth(req, _res, next) {
-    logWarning(
-        `An API key should have been provided for the request on the endpoint "${req.originalUrl}"`
-    );
-    next();
-}
+import { logError } from "../utils/logger.js";
 
 /**
  * Log errors
@@ -52,4 +38,4 @@ function unknownEndpoint(req, res) {
     res.status(404).send({ error: "Unknown endpoint" });
 }
 
-export { auth, errorLogger, errorResponder, unknownEndpoint };
+export { errorLogger, errorResponder, unknownEndpoint };

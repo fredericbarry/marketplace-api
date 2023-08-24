@@ -8,7 +8,7 @@ import {
     errorLogger,
     errorResponder,
     unknownEndpoint,
-} from "./utils/middlewares.js";
+} from "./middlewares/middlewares.js";
 
 const corsOptions = {
     origin: (origin, callback) => {
