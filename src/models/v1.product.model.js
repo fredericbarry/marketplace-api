@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 
-import { PRODUCT_STATUSES } from "../configs/constants.config.js";
+import STATUSES from "../constants/statuses.constant.js";
 import { db } from "../utils/db.js";
 
 const Product = db.define("products", {
@@ -16,7 +16,7 @@ const Product = db.define("products", {
     },
     status: {
         type: DataTypes.ENUM,
-        values: PRODUCT_STATUSES,
+        values: STATUSES.PRODUCT,
     },
     created_utc: {
         allowNull: false,
