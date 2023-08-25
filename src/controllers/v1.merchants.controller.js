@@ -16,7 +16,7 @@ async function createNew(req, res, next) {
     try {
         validateMerchant(body);
         const createdMerchant = await MerchantModelV1.createNew(body);
-        res.json(createdMerchant);
+        res.status(201).json(createdMerchant);
     } catch (error) {
         next(error);
     }
@@ -92,7 +92,7 @@ const deleteOne = async (req, res, next) => {
 
     try {
         await MerchantModelV1.deleteOne(id);
-        res.status(200).end();
+        res.end();
     } catch (error) {
         next(error);
     }
