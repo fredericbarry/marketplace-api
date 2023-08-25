@@ -8,7 +8,7 @@ import { logError } from "../utils/logger.js";
  * @param {Object} _res The response (unused)
  * @param {Function} next
  */
-function errorLogger(err, _req, _res, next) {
+function logger(err, _req, _res, next) {
     logError(err.message);
     next(err);
 }
@@ -21,10 +21,10 @@ function errorLogger(err, _req, _res, next) {
  * @param {Object} res The response
  * @param {Function} _next (unused)
  */
-function errorResponder(err, _req, res, _next) {
+function responder(err, _req, res, _next) {
     const status = err.status || 400;
     res.header("Content-Type", "application/json");
     res.status(status).send({ error: err.message });
 }
 
-export { errorLogger, errorResponder };
+export { logger, responder };
