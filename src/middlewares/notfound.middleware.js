@@ -1,4 +1,4 @@
-import { logError } from "../utils/logger.js";
+import * as log from "../utils/logger.js";
 
 /**
  * Catch requests to non-existent routes
@@ -7,7 +7,7 @@ import { logError } from "../utils/logger.js";
  * @param {Object} res The response
  */
 function notFoundMiddleware(req, res) {
-    logError(`Unknown endpoint "${req.originalUrl}"`);
+    log.error(`Unknown endpoint "${req.originalUrl}"`);
     res.status(404).send({ error: "Unknown endpoint" });
 }
 

@@ -7,7 +7,7 @@ import {
     DB_PORT,
     DB_USER,
 } from "../configs/db.config.js";
-import { logError, logMessage } from "./logger.js";
+import * as log from "./logger.js";
 
 const db = new Sequelize({
     database: DB_NAME,
@@ -24,9 +24,9 @@ const db = new Sequelize({
 
 try {
     await db.authenticate();
-    logMessage("Connected to the database");
+    log.message("Connected to the database");
 } catch (error) {
-    logError("Failed to connect to the database");
+    log.error("Failed to connect to the database");
 }
 
 export { db };

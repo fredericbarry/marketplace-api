@@ -6,7 +6,7 @@ import * as errorsMiddleware from "./src/middlewares/errors.middleware.js";
 import notFoundMiddleware from "./src/middlewares/notfound.middleware.js";
 import { router as merchantsRouterV1 } from "./src/routers/v1.merchants.router.js";
 import { router as productsRouterV1 } from "./src/routers/v1.products.router.js";
-import { logInfo } from "./src/utils/logger.js";
+import * as log from "./src/utils/logger.js";
 
 const app = express();
 
@@ -21,5 +21,5 @@ app.use(errorsMiddleware.responder);
 app.use(notFoundMiddleware);
 
 app.listen(APP_PORT, () => {
-    logInfo(`App listening at http://${APP_HOST}:${APP_PORT}/`);
+    log.info(`App listening at http://${APP_HOST}:${APP_PORT}/`);
 });

@@ -1,4 +1,4 @@
-import { logError } from "../utils/logger.js";
+import * as log from "../utils/logger.js";
 
 /**
  * Log errors
@@ -9,7 +9,7 @@ import { logError } from "../utils/logger.js";
  * @param {Function} next
  */
 function logger(err, _req, _res, next) {
-    logError(err.message);
+    log.error(err.message);
     next(err);
 }
 
