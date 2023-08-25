@@ -9,15 +9,19 @@ import { ERRORS, throwError } from "../utils/error.js";
  * @returns {Promise|Product} The created product object
  */
 async function createNew(product) {
-    try {
-        product.created_utc = nowUtc();
-        product.updated_utc = nowUtc();
+    const productName = product.name;
+    const newProduct = {
+        ...product,
+        created_utc: nowUtc(),
+        updated_utc: nowUtc(),
+    };
 
-        return await Product.create(product);
+    try {
+        return await Product.create(newProduct);
     } catch (error) {
         if (error.name === "SequelizeUniqueConstraintError") {
             throwError(
-                `Product ${product.name} already exists`,
+                `Product ${productName} already exists`,
                 ERRORS.CONFLICT,
                 error
             );
@@ -72,20 +76,14 @@ async function getOne(id) {
  * @returns {Promise|Number} The number of affected rows
  */
 async function updateOne(id, product) {
-    const { name, status } = product;
-
-    const result = await Product.update(
-        {
-            name: name,
-            status: status,
-            updated_utc: nowUtc(),
+    const updatedProduct = { ...product, updated_utc: nowUtc() };
+    const whereClause = {
+        where: {
+            id,
         },
-        {
-            where: {
-                id: id,
-            },
-        }
-    );
+    };
+
+    const result = await Product.update(updatedProduct, whereClause);
 
     if (result[0] === 0) {
         throwError(
@@ -104,11 +102,13 @@ async function updateOne(id, product) {
  * @returns {Promise|Number} The number of destroyed rows
  */
 async function deleteOne(id) {
-    const response = await Product.destroy({
+    const whereClause = {
         where: {
-            id: id,
+            id,
         },
-    });
+    };
+
+    const response = await Product.destroy(whereClause);
 
     if (response === 0) {
         throwError(

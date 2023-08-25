@@ -9,15 +9,19 @@ import { ERRORS, throwError } from "../utils/error.js";
  * @returns {Promise|Merchant} The created merchant object
  */
 async function createNew(merchant) {
-    try {
-        merchant.created_utc = nowUtc();
-        merchant.updated_utc = nowUtc();
+    const merchantName = merchant.name;
+    const newMerchant = {
+        ...merchant,
+        created_utc: nowUtc(),
+        updated_utc: nowUtc(),
+    };
 
-        return await Merchant.create(merchant);
+    try {
+        return await Merchant.create(newMerchant);
     } catch (error) {
         if (error.name === "SequelizeUniqueConstraintError") {
             throwError(
-                `Merchant ${merchant.name} already exists`,
+                `Merchant ${merchantName} already exists`,
                 ERRORS.CONFLICT,
                 error
             );
@@ -72,20 +76,14 @@ async function getOne(id) {
  * @returns {Promise|Number} The number of affected rows
  */
 async function updateOne(id, merchant) {
-    const { name, status } = merchant;
-
-    const result = await Merchant.update(
-        {
-            name: name,
-            status: status,
-            updated_utc: nowUtc(),
+    const updatedMerchant = { ...merchant, updated_utc: nowUtc() };
+    const whereClause = {
+        where: {
+            id,
         },
-        {
-            where: {
-                id: id,
-            },
-        }
-    );
+    };
+
+    const result = await Merchant.update(updatedMerchant, whereClause);
 
     if (result[0] === 0) {
         throwError(
@@ -104,11 +102,13 @@ async function updateOne(id, merchant) {
  * @returns {Promise|Number} The number of destroyed rows
  */
 async function deleteOne(id) {
-    const response = await Merchant.destroy({
+    const whereClause = {
         where: {
-            id: id,
+            id,
         },
-    });
+    };
+
+    const response = await Merchant.destroy(whereClause);
 
     if (response === 0) {
         throwError(
