@@ -5,7 +5,7 @@ import { logError } from "../utils/logger.js";
  *
  * @param {Object} err The error
  * @param {Object} _req The request (unused)
- * @param {Object} res The response (unused)
+ * @param {Object} _res The response (unused)
  * @param {Function} next
  */
 function errorLogger(err, _req, _res, next) {
