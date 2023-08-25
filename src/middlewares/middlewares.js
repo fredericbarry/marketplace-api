@@ -27,15 +27,4 @@ function errorResponder(err, _req, res, _next) {
     res.status(status).send({ error: err.message });
 }
 
-/**
- * Catch requests to non-existent routes
- *
- * @param {Object} req The request
- * @param {Object} res The response
- */
-function unknownEndpoint(req, res) {
-    logError(`Unknown endpoint "${req.originalUrl}"`);
-    res.status(404).send({ error: "Unknown endpoint" });
-}
-
-export { errorLogger, errorResponder, unknownEndpoint };
+export { errorLogger, errorResponder };
