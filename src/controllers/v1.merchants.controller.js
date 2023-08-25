@@ -116,7 +116,7 @@ function validateMerchant(body) {
         throwError("Merchant status is required", ERRORS.BAD_REQUEST);
     }
 
-    if (!MERCHANT_STATUSES.includes(status)) {
+    if (!STATUSES.MERCHANT.includes(status)) {
         throwError(
             `Invalid merchant status '${status}' provided`,
             ERRORS.BAD_REQUEST

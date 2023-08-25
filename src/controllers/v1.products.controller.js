@@ -116,7 +116,7 @@ function validateProduct(body) {
         throwError("Product status is required", ERRORS.BAD_REQUEST);
     }
 
-    if (!PRODUCT_STATUSES.includes(status)) {
+    if (!STATUSES.PRODUCT.includes(status)) {
         throwError(
             `Invalid product status '${status}' provided`,
             ERRORS.BAD_REQUEST
