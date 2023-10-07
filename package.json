@@ -15,7 +15,7 @@
     "pg": "^8.11.2",
     "sequelize": "^6.32.1"
   },
-  "main": "index.js",
+  "main": "./src/app.js",
   "type": "module",
   "engines": {
     "node": ">=16.17.0"
