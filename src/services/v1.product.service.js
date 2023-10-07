@@ -1,6 +1,8 @@
-import Product from "../models/v1.product.model.js";
-import { nowUtc } from "../utils/date.js";
-import { ERRORS, throwError } from "../utils/error.js";
+import db from "../models/v1.db.model.js";
+import { nowUtc } from "../utils/date.util.js";
+import { ERRORS, throwError } from "../utils/error.util.js";
+
+const { Merchant, Product } = db;
 
 /**
  * Builds a new Product model instance and calls save on it
@@ -8,31 +10,31 @@ import { ERRORS, throwError } from "../utils/error.js";
  * @param {Object} product The product to create
  * @returns {Promise|Product} The created product object
  */
-async function createNew(product) {
-    const productName = product.name;
-    const newProduct = {
-        ...product,
-        created_utc: nowUtc(),
-        updated_utc: nowUtc(),
-    };
+async function createOne(product) {
+  const productName = product.name;
+  const newProduct = {
+    ...product,
+    created_utc: nowUtc(),
+    updated_utc: nowUtc(),
+  };
 
-    try {
-        return await Product.create(newProduct);
-    } catch (error) {
-        if (error.name === "SequelizeUniqueConstraintError") {
-            throwError(
-                `Product ${productName} already exists`,
-                ERRORS.CONFLICT,
-                error
-            );
-        }
-
-        throwError(
-            "An unknown error occured while creating the product",
-            ERRORS.INTERNAL_SERVER_ERROR,
-            error
-        );
+  try {
+    return await Product.create(newProduct);
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      throwError(
+        `Product ${productName} already exists`,
+        ERRORS.CONFLICT,
+        error
+      );
     }
+
+    throwError(
+      "An unknown error occured while creating the product",
+      ERRORS.INTERNAL_SERVER_ERROR,
+      error
+    );
+  }
 }
 
 /**
@@ -40,16 +42,16 @@ async function createNew(product) {
  *
  * @returns {Promise|Array<Product>} The products array that was found
  */
-async function getAll() {
-    try {
-        return await Product.findAll();
-    } catch (error) {
-        throwError(
-            "An unknown error occured while reading the products",
-            ERRORS.INTERNAL_SERVER_ERROR,
-            error
-        );
-    }
+async function readAll() {
+  try {
+    return await Product.findAll();
+  } catch (error) {
+    throwError(
+      "An unknown error occured while reading the products",
+      ERRORS.INTERNAL_SERVER_ERROR,
+      error
+    );
+  }
 }
 
 /**
@@ -58,14 +60,14 @@ async function getAll() {
  * @param {Number} id The product ID
  * @returns {Promise|Product} The product object
  */
-async function getOne(id) {
-    const response = await Product.findByPk(id);
+async function readOne(id) {
+  const response = await Product.findByPk(id);
 
-    if (!response) {
-        throwError(`Product ID ${id} could not be found`, ERRORS.NOT_FOUND);
-    }
+  if (!response) {
+    throwError(`Product ID ${id} could not be found`, ERRORS.NOT_FOUND);
+  }
 
-    return response;
+  return response;
 }
 
 /**
@@ -76,23 +78,20 @@ async function getOne(id) {
  * @returns {Promise|Number} The number of affected rows
  */
 async function updateOne(id, product) {
-    const updatedProduct = { ...product, updated_utc: nowUtc() };
-    const whereClause = {
-        where: {
-            id,
-        },
-    };
+  const updatedProduct = { ...product, updated_utc: nowUtc() };
+  const whereClause = {
+    where: {
+      id,
+    },
+  };
 
-    const result = await Product.update(updatedProduct, whereClause);
+  const result = await Product.update(updatedProduct, whereClause);
 
-    if (result[0] === 0) {
-        throwError(
-            `Product ID ${id} could not be found for update`,
-            ERRORS.GONE
-        );
-    }
+  if (result[0] === 0) {
+    throwError(`Product ID ${id} could not be found for update`, ERRORS.GONE);
+  }
 
-    return result[0];
+  return result[0];
 }
 
 /**
@@ -102,22 +101,19 @@ async function updateOne(id, product) {
  * @returns {Promise|Number} The number of destroyed rows
  */
 async function deleteOne(id) {
-    const whereClause = {
-        where: {
-            id,
-        },
-    };
+  const whereClause = {
+    where: {
+      id,
+    },
+  };
 
-    const response = await Product.destroy(whereClause);
+  const response = await Product.destroy(whereClause);
 
-    if (response === 0) {
-        throwError(
-            `Product ID ${id} could not be found for deletion`,
-            ERRORS.GONE
-        );
-    }
+  if (response === 0) {
+    throwError(`Product ID ${id} could not be found for deletion`, ERRORS.GONE);
+  }
 
-    return response;
+  return response;
 }
 
-export { createNew, getAll, getOne, updateOne, deleteOne };
+export { createOne, readAll, readOne, updateOne, deleteOne };

@@ -1,6 +1,6 @@
-import STATUSES from "../constants/statuses.constant.js";
+import STATUSES from "../configs/constants.config.js";
 import * as ProductModelV1 from "../services/v1.product.service.js";
-import { ERRORS, throwError } from "../utils/error.js";
+import { ERRORS, throwError } from "../utils/error.util.js";
 
 /**
  * Create a product
@@ -10,16 +10,16 @@ import { ERRORS, throwError } from "../utils/error.js";
  * @param {Object} req.body The JSON payload
  * @param {Function} next
  */
-async function createNew(req, res, next) {
-    const body = req.body;
+async function createOne(req, res, next) {
+  const body = req.body;
 
-    try {
-        validateProduct(body);
-        const createdProduct = await ProductModelV1.createNew(body);
-        res.status(201).json(createdProduct);
-    } catch (error) {
-        next(error);
-    }
+  try {
+    validate(body);
+    const createdProduct = await ProductModelV1.create(body);
+    res.status(201).json(createdProduct);
+  } catch (error) {
+    next(error);
+  }
 }
 
 /**
@@ -29,13 +29,13 @@ async function createNew(req, res, next) {
  * @param {Object} res The response
  * @param {Function} next
  */
-async function getAll(_req, res, next) {
-    try {
-        const allProducts = await ProductModelV1.getAll();
-        res.json(allProducts);
-    } catch (error) {
-        next(error);
-    }
+async function readAll(_req, res, next) {
+  try {
+    const allProducts = await ProductModelV1.readAll();
+    res.json(allProducts);
+  } catch (error) {
+    next(error);
+  }
 }
 
 /**
@@ -46,15 +46,15 @@ async function getAll(_req, res, next) {
  * @param {Number} req.params.id The product ID
  * @param {Function} next
  */
-async function getOne(req, res, next) {
-    const id = req.params.id;
+async function readOne(req, res, next) {
+  const id = req.params.id;
 
-    try {
-        const product = await ProductModelV1.getOne(id);
-        res.json(product);
-    } catch (error) {
-        next(error);
-    }
+  try {
+    const product = await ProductModelV1.readOne(id);
+    res.json(product);
+  } catch (error) {
+    next(error);
+  }
 }
 
 /**
@@ -67,16 +67,16 @@ async function getOne(req, res, next) {
  * @param {Function} next
  */
 async function updateOne(req, res, next) {
-    const body = req.body;
-    const id = req.params.id;
+  const body = req.body;
+  const id = req.params.id;
 
-    try {
-        validateProduct(body);
-        const updatedProduct = await ProductModelV1.updateOne(id, body);
-        res.json(updatedProduct);
-    } catch (error) {
-        next(error);
-    }
+  try {
+    validate(body);
+    const updatedProduct = await ProductModelV1.updateOne(id, body);
+    res.json(updatedProduct);
+  } catch (error) {
+    next(error);
+  }
 }
 
 /**
@@ -87,16 +87,16 @@ async function updateOne(req, res, next) {
  * @param {Number} req.params.id The product ID
  * @param {Function} next
  */
-const deleteOne = async (req, res, next) => {
-    const id = req.params.id;
+async function deleteOne(req, res, next) {
+  const id = req.params.id;
 
-    try {
-        await ProductModelV1.deleteOne(id);
-        res.end();
-    } catch (error) {
-        next(error);
-    }
-};
+  try {
+    await ProductModelV1.deleteOne(id);
+    res.end();
+  } catch (error) {
+    next(error);
+  }
+}
 
 /**
  * Verify the validity of a product object
@@ -105,23 +105,23 @@ const deleteOne = async (req, res, next) => {
  * @param {String} req.body.name The product name
  * @param {String} req.body.status The product status
  */
-function validateProduct(body) {
-    const { name, status } = body;
+function validate(body) {
+  const { name, status } = body;
 
-    if (!name) {
-        throwError("Product name is required", ERRORS.BAD_REQUEST);
-    }
+  if (!name) {
+    throwError("Product name is required", ERRORS.BAD_REQUEST);
+  }
 
-    if (!status) {
-        throwError("Product status is required", ERRORS.BAD_REQUEST);
-    }
+  if (!status) {
+    throwError("Product status is required", ERRORS.BAD_REQUEST);
+  }
 
-    if (!STATUSES.PRODUCT.includes(status)) {
-        throwError(
-            `Invalid product status '${status}' provided`,
-            ERRORS.BAD_REQUEST
-        );
-    }
+  if (!STATUSES.PRODUCT.includes(status)) {
+    throwError(
+      `Invalid product status '${status}' provided`,
+      ERRORS.BAD_REQUEST
+    );
+  }
 }
 
-export { createNew, getAll, getOne, updateOne, deleteOne };
+export { createOne, readAll, readOne, updateOne, deleteOne };

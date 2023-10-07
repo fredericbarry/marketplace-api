@@ -1,4 +1,4 @@
-import * as log from "../utils/logger.js";
+import * as log from "../utils/logger.util.js";
 
 /**
  * Log errors
@@ -9,8 +9,8 @@ import * as log from "../utils/logger.js";
  * @param {Function} next
  */
 function logger(err, _req, _res, next) {
-    log.error(err.message);
-    next(err);
+  log.error(err.message);
+  next(err);
 }
 
 /**
@@ -22,9 +22,9 @@ function logger(err, _req, _res, next) {
  * @param {Function} _next (unused)
  */
 function responder(err, _req, res, _next) {
-    const status = err.status || 400;
-    res.header("Content-Type", "application/json");
-    res.status(status).send({ error: err.message });
+  const status = err.status || 400;
+  res.header("Content-Type", "application/json");
+  res.status(status).send({ error: err.message });
 }
 
 export { logger, responder };

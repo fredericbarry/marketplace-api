@@ -5,9 +5,9 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.post("/", auth, ProductsControllerV1.createNew);
-router.get("/", ProductsControllerV1.getAll);
-router.get("/:id", ProductsControllerV1.getOne);
+router.post("/", auth, ProductsControllerV1.createOne);
+router.get("/", ProductsControllerV1.readAll);
+router.get("/:id", ProductsControllerV1.readOne);
 router.put("/:id", auth, ProductsControllerV1.updateOne);
 router.delete("/:id", auth, ProductsControllerV1.deleteOne);
 
