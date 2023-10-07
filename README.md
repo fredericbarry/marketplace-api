@@ -19,6 +19,11 @@ The [nodemon](https://yarnpkg.com/package/nodemon) tool will automatically resta
 
 ## Changelog
 
+### v0.2.2
+
+- Refactored models for associations
+- General app code refactoring
+
 ### v0.2.1
 
 - Added route-based versioning
