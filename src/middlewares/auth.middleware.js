@@ -1,4 +1,4 @@
-import * as log from "../utils/logger.js";
+import * as log from "../utils/logger.util.js";
 
 /**
  * Validate the API key
@@ -8,10 +8,10 @@ import * as log from "../utils/logger.js";
  * @param {Function} next
  */
 function auth(req, _res, next) {
-    log.warning(
-        `An API key should have been provided for the request on the endpoint "${req.originalUrl}"`
-    );
-    next();
+  log.warning(
+    `An API key should have been provided for the request on the endpoint "${req.originalUrl}"`
+  );
+  next();
 }
 
 export { auth };

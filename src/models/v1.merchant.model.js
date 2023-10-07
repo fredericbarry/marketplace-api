@@ -1,31 +1,32 @@
-import { DataTypes } from "sequelize";
+import STATUSES from "../configs/constants.config.js";
 
-import STATUSES from "../constants/statuses.constant.js";
-import { db } from "../utils/db.js";
-
-const Merchant = db.define("merchants", {
+function defineMerchantModel(sequelize, DataTypes) {
+  const Merchant = sequelize.define("merchants", {
     id: {
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
     },
     name: {
-        allowNull: false,
-        type: DataTypes.STRING,
-        unique: true,
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true,
     },
     status: {
-        type: DataTypes.ENUM,
-        values: STATUSES.MERCHANT,
+      type: DataTypes.ENUM,
+      values: STATUSES.MERCHANT,
     },
     created_utc: {
-        allowNull: false,
-        type: DataTypes.DATE,
+      allowNull: false,
+      type: DataTypes.DATE,
     },
     updated_utc: {
-        allowNull: false,
-        type: DataTypes.DATE,
+      allowNull: false,
+      type: DataTypes.DATE,
     },
-});
+  });
 
-export default Merchant;
+  return Merchant;
+}
+
+export default defineMerchantModel;
