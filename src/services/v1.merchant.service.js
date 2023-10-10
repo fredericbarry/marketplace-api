@@ -2,7 +2,7 @@ import db from "../models/v1.db.model.js";
 import { nowUtc } from "../utils/date.util.js";
 import { ERRORS, throwError } from "../utils/error.util.js";
 
-const { Merchant, Product } = db;
+const { Merchant } = db;
 
 /**
  * Builds a new Merchant model instance and calls save on it

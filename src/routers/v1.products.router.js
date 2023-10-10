@@ -10,5 +10,6 @@ router.get("/", ProductsControllerV1.readAll);
 router.get("/:id", ProductsControllerV1.readOne);
 router.put("/:id", auth, ProductsControllerV1.updateOne);
 router.delete("/:id", auth, ProductsControllerV1.deleteOne);
+router.post("/add-merchant", auth, ProductsControllerV1.addMerchant);
 
 export { router };

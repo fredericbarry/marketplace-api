@@ -99,6 +99,33 @@ async function deleteOne(req, res, next) {
 }
 
 /**
+ * Add a merchant to a product
+ *
+ * @param {Object} req The request
+ * @param {Object} res The response
+ * @param {Object} req.body The JSON payload
+ * @param {Function} next
+ */
+async function addMerchant(req, res, next) {
+  const { merchant_id, product_id } = req.body;
+
+  try {
+    if (!merchant_id) {
+      throwError("Merchant ID is required", ERRORS.BAD_REQUEST);
+    }
+
+    if (!product_id) {
+      throwError("Product ID is required", ERRORS.BAD_REQUEST);
+    }
+
+    const result = await ProductModelV1.addMerchant(merchant_id, product_id);
+    res.status(201).json(result);
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
  * Verify the validity of a product object
  *
  * @param {Object} body The JSON payload
@@ -124,4 +151,4 @@ function validate(body) {
   }
 }
 
-export { createOne, readAll, readOne, updateOne, deleteOne };
+export { createOne, readAll, readOne, updateOne, deleteOne, addMerchant };

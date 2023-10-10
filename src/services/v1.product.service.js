@@ -116,4 +116,39 @@ async function deleteOne(id) {
   return response;
 }
 
-export { createOne, readAll, readOne, updateOne, deleteOne };
+/**
+ * Add a merchant to a product
+ *
+ * @param {Number} merchantId The merchant ID
+ * @param {Number} productId The product ID
+ * @returns {Promise|Object} The created association object
+ */
+async function addMerchant(merchantId, productId) {
+  const merchant = await Merchant.findByPk(merchantId);
+
+  if (!merchant) {
+    throwError(
+      `Merchant ID ${merchantId} could not be found`,
+      ERRORS.NOT_FOUND
+    );
+  }
+
+  const product = await Product.findByPk(productId);
+
+  if (!product) {
+    throwError(`Product ID ${productId} could not be found`, ERRORS.NOT_FOUND);
+  }
+
+  const result = await product.addMerchant(merchant);
+
+  if (!result) {
+    throwError(
+      `Association between merchant ID ${merchantId} and product ID ${productId} already exists`,
+      ERRORS.CONFLICT
+    );
+  }
+
+  return result;
+}
+
+export { createOne, readAll, readOne, updateOne, deleteOne, addMerchant };
